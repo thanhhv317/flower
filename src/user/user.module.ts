@@ -9,8 +9,8 @@ import { UserService } from './user.service';
 @Module({
     imports: [
         MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
-    MongooseModule.forFeature([{ name: 'ForgotPassword', schema: ForgotPasswordSchema}]),
-    AuthModule
+        MongooseModule.forFeature([{ name: 'ForgotPassword', schema: ForgotPasswordSchema }]),
+        AuthModule
     ],
     controllers: [
         UserController],

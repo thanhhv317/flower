@@ -23,7 +23,6 @@ export const UserSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        minlength: 10
     },
     address: {
         type: Object

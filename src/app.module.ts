@@ -4,13 +4,15 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
+import { CategoryModule } from './category/category.module';
 import "dotenv/config";
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGO_URI),
     UserModule,
-    AuthModule
+    AuthModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService],
