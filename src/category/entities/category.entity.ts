@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
 
 export class CategoryEntity {
-    private readonly id: string;
+    id: string;
     private readonly name: string;
     private readonly description: string;
     private readonly image: string;

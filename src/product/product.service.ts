@@ -178,4 +178,8 @@ export class ProductService {
         let products = await this.productModel.aggregate(pipeline);
         return products.map(product => new ProductEntity(product));
     }
+
+    findAll() {
+        return ['do', 'oc', 'cho']
+    }
 }

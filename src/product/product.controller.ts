@@ -6,14 +6,14 @@ import { Role } from 'src/common/enums/role.enum';
 import { FilterForGetListMethods } from 'src/common/utils/filter-get-list.common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductService } from './product.service';
-import {Request} from 'express';
+import { Request } from 'express';
 import { QueryForGetListMethods } from 'src/common/utils/query-get-list.common';
 import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('')
 export class ProductController {
 
-    constructor(private readonly productService: ProductService){}
+    constructor(private readonly productService: ProductService) { }
 
     @Post('products')
     @UseGuards(AuthGuard('jwt'))
@@ -40,7 +40,7 @@ export class ProductController {
     @UseGuards(AuthGuard('jwt'))
     @Roles(Role.Admin)
     @ApiBearerAuth()
-    updateProduct(@Param('id') productId: string, @Body() updateProductDto: UpdateProductDto,  @Req() req) {
+    updateProduct(@Param('id') productId: string, @Body() updateProductDto: UpdateProductDto, @Req() req) {
         const userId = req.user._id;
         return this.productService.updateProduct(productId, userId, updateProductDto);
     }
@@ -52,6 +52,12 @@ export class ProductController {
     deleteCategory(@Param('id') productId: string, @Req() req) {
         const userId = req.user._id;
         return this.productService.deleteProduct(productId, userId);
+    }
+
+
+    @Get()
+    findAll(): Array<string> {
+        return this.productService.findAll();
     }
 
 }
