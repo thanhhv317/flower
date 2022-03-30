@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IPagination } from 'src/common/interfaces/pagination.interface';
-import { orderObj } from 'src/common/utils/order-by-object.common';
+import { orderObj } from '../common/utils/order-by-object.common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryEntity } from './entities/category.entity';
@@ -16,8 +16,8 @@ export class CategoryService {
 
     async createCategory(createCategoryDto: CreateCategoryDto, userId): Promise<CategoryEntity> {
         try {
-            const category = new this.categoryModel({ ...createCategoryDto, create_user: userId, update_user: userId });
-            await category.save();
+            const category = await this.categoryModel.create({ ...createCategoryDto, create_user: userId, update_user: userId });
+            // await category.save();
             return new CategoryEntity(category);
         } catch (error) {
             console.log(error);

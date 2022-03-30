@@ -1,15 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Model } from 'mongoose';
+import { Product } from './interfaces/product.interface';
 import { ProductService } from './product.service';
 
 describe('ProductService', () => {
   let service: ProductService;
+  let productModule: Model<Product>
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ProductService],
+      providers: [
+          ProductService
+        ],
     }).compile();
 
+
     service = module.get<ProductService>(ProductService);
+    // productModule = module.get<Model(Product)>
   });
 
   it('should be defined', () => {

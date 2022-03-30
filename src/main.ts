@@ -1,10 +1,17 @@
+require('dotenv').config();
+import { Tracer } from './infrastructure/tracer/tracer';
+// Load Tracer first.
+Tracer.start({
+  serviceName: 'flower-srv',
+  logger: console,
+});
+
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { warn } from 'console';
 import { AppModule } from './app.module';
 import { UserModule } from './user/user.module';
-import 'dotenv/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

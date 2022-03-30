@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './interfaces/user.interface';
-import { v4 } from 'uuid';
 import { addHours } from 'date-fns';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';

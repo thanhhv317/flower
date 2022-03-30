@@ -15,9 +15,9 @@ export class ProductService {
         @InjectModel('Product') private readonly productModel: Model<Product>
     ) { }
 
-    async createProduct(createProductDto: CreateProductDto, userId: string): Promise<ProductEntity> {
+    async createProduct(createProductDto: CreateProductDto, userId: string, metadata = null): Promise<ProductEntity> {
 
-        const checkProductNameExist = await this.checkProductNameExist(createProductDto.name);
+        const checkProductNameExist = await this.checkProductNameExist(createProductDto.name, metadata);
         if (!!checkProductNameExist) {
             ProductEntity.handleProductAlreadyExist();
         }
@@ -31,7 +31,7 @@ export class ProductService {
         }
     }
 
-    async getProduct(productId: string): Promise<ProductEntity> {
+    async getProduct(productId: string, metadata = null): Promise<ProductEntity> {
         if (productId.toString().length !== 24) {
             ProductEntity.handleProductNotFound();
         }
@@ -53,7 +53,7 @@ export class ProductService {
         return new ProductEntity(product);
     }
 
-    async listProducts(filter: any, query: any): Promise<{ products: ProductEntity[], pagination: IPagination }> {
+    async listProducts(filter: any, query: any, metadata = null): Promise<{ products: ProductEntity[], pagination: IPagination }> {
         // search product by name, sku
         const { pageNumber, pageSize, orderBy } = filter;
         const sort = orderObj(orderBy);
@@ -95,8 +95,8 @@ export class ProductService {
 
         try {
             const [products, countProducts] = await Promise.all([
-                this.searchListProduct(pineline),
-                this.countListProducts(match)
+                this.searchListProduct(pineline, metadata),
+                this.countListProducts(match, metadata)
             ])
             return {
                 products,
@@ -111,10 +111,10 @@ export class ProductService {
         }
     }
 
-    async updateProduct(productId, userId, updateProductDto: UpdateProductDto): Promise<ProductEntity> {
+    async updateProduct(productId, userId, updateProductDto: UpdateProductDto, metadata = null): Promise<ProductEntity> {
         let product;
         try {
-            product = await this.getProduct(productId);
+            product = await this.getProduct(productId, metadata);
         } catch (error) {
             Logger.error(error);
         }
@@ -136,10 +136,10 @@ export class ProductService {
         return new ProductEntity(product);
     }
 
-    async deleteProduct(productId:string, userId: string) {
+    async deleteProduct(productId:string, userId: string, metadata = null) {
         let product;
         try {
-            product = await this.getProduct(productId);
+            product = await this.getProduct(productId, metadata);
         } catch (error) {
             Logger.error(error);
         }
@@ -157,7 +157,7 @@ export class ProductService {
         return;
     }
 
-    private async checkProductNameExist(productName): Promise<Boolean> {
+    private async checkProductNameExist(productName, metadata ?: any): Promise<Boolean> {
         const condition = {
             $and: [
                 { status: { $ne: "DELETE" } },
@@ -169,13 +169,17 @@ export class ProductService {
         return false;
     }
 
-    private async countListProducts(condition: any): Promise<number> {
+    private async countListProducts(condition: any, metadata?: any): Promise<number> {
         const countListProducts = await this.productModel.countDocuments(condition);
         return countListProducts;
     }
 
-    private async searchListProduct(pipeline: any): Promise<ProductEntity[]> {
+    private async searchListProduct(pipeline: any, metadata?: any): Promise<ProductEntity[]> {
         let products = await this.productModel.aggregate(pipeline);
         return products.map(product => new ProductEntity(product));
+    }
+
+    findAll() {
+        return ['do', 'oc', 'cho']
     }
 }
